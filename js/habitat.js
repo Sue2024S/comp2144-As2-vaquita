@@ -4,11 +4,18 @@ function buildHabitat(scene) {
     scene.fogColor = new BABYLON.Color3(0.05, 0.18, 0.28);
     scene.fogDensity = 0.035;
     
-    //ocean
+    //ocean 360
     const photoDome = new BABYLON.PhotoDome(
         "oceanSky",
         "assets/ocean-360.jpg",
         { resolution: 32, size: 500 },
+        scene
+    );
+
+    //ocean floor
+    const floor = BABYLON.MeshBuilder.CreateGround(
+        "oceanFloor",
+        { width: 80, height: 80, subdivisions: 2 },
         scene
     );
 
@@ -19,6 +26,11 @@ function buildHabitat(scene) {
     floorMat.specularColor = new BABYLON.Color3(0.1, 0.1, 0.15); 
     floor.material = floorMat;
     floor.position.y = -1;
-    
+
+    //ocean sound
+    const music = new BABYLON.Sound(
+        "oceanMusic",
+    );
+
 
 }
