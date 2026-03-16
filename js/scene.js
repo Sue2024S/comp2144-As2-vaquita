@@ -23,4 +23,14 @@ const createScene = async function () {
     sunLight.intensity = 0.8;
     sunLight.positon = new BABYLON.Vector3(5, 10, -5);
 
+    //camera
+    const camera = new BABYLON.UniversalCamera(
+        "camera",
+        new BABYLON.Vector3(0, 1.6, 0),
+        scene
+    );
+    camera.setTarget(new BABYLON.Vector3(0, 1.2, 5));
+    camera.attachControl(canvas, true);
+    camera.speed = 0.1;
+
 };
