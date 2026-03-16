@@ -49,5 +49,17 @@ const createScene = async function () {
     });
 
     return scene;
-
+    
 };
+
+//loop
+createScene().then((scene) => {
+  engine.runRenderLoop(() => {
+    scene.render();
+  });
+});
+
+// adapt to browser window changes
+window.addEventListener("resize", () => {
+  engine.resize();
+});
