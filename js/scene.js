@@ -31,6 +31,23 @@ const createScene = async function () {
     );
     camera.setTarget(new BABYLON.Vector3(0, 1.2, 5));
     camera.attachControl(canvas, true);
-    camera.speed = 0.1;
+    camera.minZ = 0.1;
+
+    //enable hand tracking
+    const xrHelper = await scene.createDefaultXRExperienceAsync({
+        floorMeshes: [scene.getMeshByName("oceanFloor")],
+        optionalFeatures: true 
+    });
+
+    //position user looking at Vaquita
+    xrHelper.baseExperience.onStateChangedObservable.add((state) => {
+        if (state === BABYLON.WebXRState.IN_XR) {
+            xrHelper.baseExperience.setPositionOfCameraUsingContainer(
+                new BABYLON.Vector3(0, xrHelper.baseExperience.camera.position.y, 0)
+            );
+        }
+    });
+
+    return scene;
 
 };
