@@ -25,12 +25,8 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-    <a-scene 
-        webxr="requiredFeatures: local-floor; optionalFeatures: bounded-floor, hand-tracking"
-        vr-mode-ui="enabled: true"
-        loading-screen="dotsColor: #00bcd4; backgroundColor: #001e2b"
-        id="main-scene"
-    >
+    <canvas id="renderCanvas"></canvas>
+    <div id="subtitle-overlay" class="subtitle-box" aria-live="polite"></div>
 
 </body>
 </html>
