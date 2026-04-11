@@ -28,7 +28,6 @@ const createScene = async function () {
     new BABYLON.Vector3(-1, -2, 1),
     scene
   );
-  
   sun.intensity = 0.8;
   sun.position = new BABYLON.Vector3(5, 10, -5);
 
@@ -46,6 +45,7 @@ const createScene = async function () {
     { width: 80, height: 80 },
     scene
   );
+
   const floorMat = new BABYLON.StandardMaterial("floorMat", scene);
   floorMat.diffuseTexture = new BABYLON.Texture("media/ocean-floor.jpg", scene);
   floorMat.diffuseTexture.uScale = 8;
@@ -54,7 +54,7 @@ const createScene = async function () {
   floor.position.y = -1;
 
   //habitat: sound
-  const ocean = new BABYLON.Sound( "oceanAmbient", "media/ocean-music.mp3", { loop: true, autoplay: true, volume: 0.4 }, scene, null );
+  const ocean = new BABYLON.Sound( "oceanAmbient", "media/ocean-music.mp3", { loop: true, autoplay: true, volume: 0.4 });
 
   //bubbles
   const bubbleEmitter = BABYLON.MeshBuilder.CreateSphere("bubbleEmitter", { diameter: 0.01 }, scene);
