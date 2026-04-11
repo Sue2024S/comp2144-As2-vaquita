@@ -58,12 +58,13 @@ const createScene = async function () {
 
   //bubbles
   const bubbleEmitter = BABYLON.MeshBuilder.CreateSphere("bubbleEmitter", { diameter: 0.01 }, scene);
+  bubbleEmitter.position = new BABYLON.Vector3(0, 0, -4);
 
   //Vaquita
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
     "",
     "models/",
-    "vaquita.glb",
+    "vaquita-placeholder.glb",
     scene
   );
   const vaquita = result.meshes[0];
@@ -73,6 +74,21 @@ const createScene = async function () {
   const swimAnim = new BABYLON.Animation ("swimBob", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
   swimAnim.setKeys([{frame:0, value:1.05}, {frame:45, value:1.35}, {frame:90, value:1.05}]);
+
+  const driftAnim = new BABYLON.Animation ("driftSway", "rotation.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+  driftAnim.setKeys([{frame:0, value:-0.18}, {frame:90, value:0.18}, {frame:180, value:-0.18}]);
+
+  const easing = new BABYLON.SineEase();
+  easing.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT); 
+  swimAnim.setEasingFunction(easing);
+  driftAnim.setEasingFunction(easing);
+
+  vaquita.animations = [swimAnim, driftAnim];
+  vaquita.beginanimation(vaquita, 0, 180, true);
+
+
+
 
   //Info Panel
   const infoPanel = BABYLON.MeshBuilder.CreatePlane(
