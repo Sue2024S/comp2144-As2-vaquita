@@ -54,7 +54,7 @@ const createScene = async function () {
   floor.position.y = -1;
 
   //habitat: sound
-  const ocean = new BABYLON.Sound( "oceanAmbient", "media/ocean-music.mp3", { loop: true, autoplay: true, volume: 0.4 });
+  const ocean = new BABYLON.Sound( "oceanAmbient", "media/ocean-music.mp3", scene, function() { ocean.play();}, { loop:true, volume:0.5 } );
 
   //bubbles
   const bubbleEmitter = BABYLON.MeshBuilder.CreateSphere("bubbleEmitter", { diameter: 0.01 }, scene);
@@ -85,7 +85,7 @@ const createScene = async function () {
   driftAnim.setEasingFunction(easing);
 
   vaquita.animations = [swimAnim, driftAnim];
-  vaquita.beginanimation(vaquita, 0, 180, true);
+  scene.beginAnimation (vaquita, 0, 180, true);
 
 
 
