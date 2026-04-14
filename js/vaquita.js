@@ -72,14 +72,24 @@ const createScene = async function () {
   bubbles.start();
 
   //Vaquita
+  // const result = await BABYLON.SceneLoader.ImportMeshAsync(
+  //   "",
+  //   "/models/",
+  //   "vaquita.glb",
+  //   scene
+  // );
+  // const vaquita = result.meshes[0];
+  // vaquita.position = new BABYLON.Vector3(0, 1.2, -4);
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
-    "",
-    "/models/",
-    "vaquita.glb",
-    scene
+    "","/models/","vaquita.glb", scene
   );
-  const vaquita = result.meshes[0];
-  vaquita.position = new BABYLON.Vector3(0, 1.2, -4);
+
+  const vaquita = result.meshes.find(m => m.name !== "__root__");
+
+  vaquita.position = new BABYLON.Vector3(0, 1, 2);
+  vaquita.scaling = new BABYLON.Vector3(2, 2, 2);
+
+  vaquita.showBoundingBox = true; 
 
   //animation- vaquita movement
   const swimAnim = new BABYLON.Animation ("swimBob", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
