@@ -60,6 +60,17 @@ const createScene = async function () {
   const bubbleEmitter = BABYLON.MeshBuilder.CreateSphere("bubbleEmitter", { diameter: 0.01 }, scene);
   bubbleEmitter.position = new BABYLON.Vector3(0, 0, -4);
 
+  const bubbles = new BABYLON.ParticleSystem("bubbles", 80, scene);
+  bubbles.emitter = bubbleEmitter;
+  bubbles.direction1 = new BABYLON.Vector3(-0.1, 1, -0.1);
+  bubbles.direction2 = new BABYLON.Vector3(0.1, 1.5, 0.1);
+  bubbles.minLifeTime = 3; bubbles.maxLifeTime = 6;
+  bubbles.emitRate = 15;
+  bubbles.minSize = 0.02; bubbles.maxSize = 0.07;
+  bubbles.color1 = new BABYLON.Color4(0.7, 0.9, 1.0, 0.6);
+  bubbles.color2 = new BABYLON.Color4(0.5, 0.75, 1.0, 0.3);
+  bubbles.start();
+
   //Vaquita
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
     "",
@@ -87,8 +98,10 @@ const createScene = async function () {
   vaquita.animations = [swimAnim, driftAnim];
   scene.beginAnimation (vaquita, 0, 180, true);
 
-
-
+  vaquita.actionManager = new BABYLON.ActionManager(scene);
+  vaquita.actionManager.registerAction(
+    new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger,() => { infoPanel.isVisible = true; })
+  );
 
   //Info Panel
   const infoPanel = BABYLON.MeshBuilder.CreatePlane(
@@ -111,6 +124,26 @@ const createScene = async function () {
 
   const stack = new BABYLON.GUI.StackPanel();
   bg.addControl(stack);
+
+  const addRow = (label, value, isHeader = false) => {
+    const txt = new BABYLON.GUI.TextBlock();
+    txt.text = isHeader ? label : `${label}: ${value}`;
+    txt.color = isHeader ? "#00bcd4" : "#ddeeff";
+    txt.fontSize = isHeader ? 36 : 24;
+    txt.textWrapping = true;
+    txt.height = isHeader ? "80px" : "60px";
+    stack.addControl(txt);
+  };
+
+    addRow("Vaquita  (Phocoena sinus)", "", true);
+    addRow("Status",  "Critically Endangered — ~10 remain");
+    addRow("Habitat", "Northern Gulf of California, Mexico");
+    addRow("Diet",    "Small fish, squid, crustaceans");
+    addRow("Threat",  "Bycatch in illegal gillnets");
+    addRow("Act",     "Support Sea Shepherd Conservation");
+
+
+
 
   const closeBtn = BABYLON.GUI.Button.CreateSimpleButton("closeBtn", "✕ Close");
   closeBtn.width = "160px"; closeBtn.height = "52px";
@@ -146,6 +179,27 @@ const createScene = async function () {
     },
   ];
 
+  const playStage = (index) => {
+    if (index >= stages.length) {
+      document.getElementById("subtitle-overlay").textContent =
+        "The Vaquita's future depends on us. Click the animal to learn more.";
+      infoPanel.isVisible = true;
+      return;
+    }
+    
+    const s = stages[index];
+    BABYLON.Animation.CreateAndStartAnimation(
+      "stageScale", vaquita, "scaling", 30, 20,
+      vaquita.scaling.clone(), s.scale,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+    document.getElementById("subtitle-overlay").textContent =
+      `${s.title}: ${s.text}`;
+    setTimeout(() => playStage(index + 1), s.duration);
+    };
+
+
+
   //life journey button
   const journeyPlane = BABYLON.MeshBuilder.CreatePlane(
     "journeyBtn", { width: 0.9, height: 0.22 }, scene
@@ -167,7 +221,8 @@ const createScene = async function () {
   
   //enable WebXR
   const xr = await scene.createDefaultXRExperienceAsync({
-    floorMeshes: [floor]
+    floorMeshes: [floor],
+    optionalFeatures: true
   });
     
   return scene;
