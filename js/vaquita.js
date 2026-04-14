@@ -83,13 +83,18 @@ const createScene = async function () {
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
     "","/models/","vaquita.glb", scene
   );
+  console.log("Meshes:", result.meshes);
 
-  const vaquita = result.meshes.find(m => m.name !== "__root__");
+  const vaquita = result.meshes.find(m => m.name !== "__root__") || result.meshes[0];
 
   vaquita.position = new BABYLON.Vector3(0, 1, 2);
   vaquita.scaling = new BABYLON.Vector3(2, 2, 2);
+  vaquita.showBoundingBox = true;
 
-  vaquita.showBoundingBox = true; 
+  // vaquita.position = new BABYLON.Vector3(0, 1, 2);
+  // vaquita.scaling = new BABYLON.Vector3(2, 2, 2);
+
+  // vaquita.showBoundingBox = true; 
 
   //animation- vaquita movement
   const swimAnim = new BABYLON.Animation ("swimBob", "position.y", 30, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
