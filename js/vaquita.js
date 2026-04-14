@@ -63,7 +63,7 @@ const createScene = async function () {
   //Vaquita
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
     "",
-    "models/",
+    "/models/",
     "vaquita.glb",
     scene
   );
