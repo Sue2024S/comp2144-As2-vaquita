@@ -37,7 +37,7 @@ const createScene = async function () {
   scene.fogDensity = 0.035;
 
   //habitat:sky
-  const photDome = new BABYLON.PhotoDome("oceanSky", "media/ocean-360.jpg", { resolution: 32, size: 500 }, scene);
+  const photDome = new BABYLON.PhotoDome("oceanSky", "./media/ocean-360.jpg", { resolution: 32, size: 500 }, scene);
 
   //habitat: ocean floor
   const floor = BABYLON.MeshBuilder.CreateGround( 
@@ -81,7 +81,7 @@ const createScene = async function () {
   // const vaquita = result.meshes[0];
   // vaquita.position = new BABYLON.Vector3(0, 1.2, -4);
   const result = await BABYLON.SceneLoader.ImportMeshAsync(
-    "","/models/","vaquita.glb", scene
+    "", "./models/", "vaquita.glb", scene
   );
   console.log("Meshes:", result.meshes);
 
