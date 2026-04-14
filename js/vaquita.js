@@ -1,3 +1,4 @@
+const BASE_URL = "/comp2144-As2-vaquita/";
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
